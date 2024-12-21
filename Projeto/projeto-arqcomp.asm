@@ -12,11 +12,10 @@ fim:	addi $2, $0, 10
 	syscall
 
 
-#===========CÉU==============#
+#===========CÉU-1==============#
 
-prmF1:	lui $8, 0x1001
-	addi $9, $0, 7168
-	ori $4, $0, 0x87CEFA
+prmF1:	addi $9, $0, 7168
+	ori $4, $0, 0x35A1FF
 
 for1:	beq $9, $0, fimF1
 
@@ -30,12 +29,12 @@ for1:	beq $9, $0, fimF1
 
 fimF1:	jr $31
 
-#===========CÉU==============#
+#===========CÉU-1==============#
 
 #===========GRAMA============#
 
 prmF2:	addi $11, $0, 128
-	ori $4, $0, 0x7CFC00
+	ori $4, $0, 0x00A210
 	
 for2:	beq $11, $0, fimF2
 
@@ -55,7 +54,7 @@ fimF2: jr $31
 #=======DETALHE-GRAMA-1========#
 
 prmF4:	addi $12, $0, 128
-	ori $13, $0, 0x7CFC00
+	ori $13, $0, 0x00A210
 	ori $14, $0, 0x8B4513
 	
 for4:	beq $12, $0, fimF4
@@ -95,7 +94,7 @@ FTerra:add $15, $0, $0
 #=======DETALHE-GRAMA-2========#
 
 prmF5:	addi $12, $0, 128
-	ori $13, $0, 0x7CFC00
+	ori $13, $0, 0x00A210
 	ori $14, $0, 0x8B4513
 	
 for5:	beq $12, $0, fimF5
