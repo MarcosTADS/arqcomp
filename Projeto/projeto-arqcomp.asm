@@ -1,14 +1,34 @@
 .text
+memMngr:
+	lui $8, 0x1001
+	lui $16, 0x1004
+	addi $17, $0, 45
+
+forMm:	beq $17, $0, fMm
+
+	lw $9, 0($8)
+	sw $9, 0($16)
+	
+	addi $8, $8, +4
+	addi $16, $16, +4
+	addi $17, $17, -1
+	
+	j forMm
+	
+fMm:
+
 
 main:	lui $8, 0x1001
 	
 	
 	jal prmF1 #Céu
+	jal prmDetCeu1 #1º Detalhe do Céu
 	jal prmF2 #Primeira linha de grama
 	jal prmF4 #1º detalhe da grama
 	jal prmF5 #2º detalhe da grama
 	jal prmF3 #Terra
 	jal finder
+	jal printVct
 	
 	#jal prmF6
 
@@ -24,7 +44,7 @@ finder:lui $8, 0x1001
 
 
       lui $8, 0x1001
-      ori $20, 0xffffff
+      ori $20, 0xffffff #Cor do ponto
       addi $10, $0, 512
       lui $21, 0xffff
       addi $25, $0, 32
@@ -33,6 +53,8 @@ finder:lui $8, 0x1001
       addi $12, $0, 'd'
       addi $13, $0, 's'
       addi $14, $0, 'w'
+      addi $15, $0, 'f'
+      
      
 for:      
       sw $20, 0($8)
@@ -44,7 +66,7 @@ for:
       beq $23, $12, dir
       beq $23, $13, baixo
       beq $23, $14, cima
-     
+      beq $23, $15, mark
      
       j cont
       
@@ -59,28 +81,72 @@ dir:  addi $8, $8, +4
       
       j cont  
      
-baixo:  addi $8, $8, +512
+baixo:addi $8, $8, +512
       lw $9, 32768($8)
       sw $9, -512($8)
       j cont
      
-cima:  addi $8, $8, -512
+cima: addi $8, $8, -512
       lw $9, 32768($8)
       sw $9, +512($8)
-      j cont                          
+      j cont 
+      
+mark: ori $4, $0, 0x9FD5EF 
+      sw $4, 0($8)
+      sw $4, 32768($8)
+      
+      sw $8, 0($16)
+      add $16, $16, +4 
+      
+      addi $8, $8, +4
+      ori $20, 0xffffff
+      addi $17, $17, +1
+      
+      j cont                      
                  
      
 cont: j for
 fimFdr: jr $31    
 
 #=========Adress-Finder======#
+
+#============printVct===========#
+
+printVct: 
+	lui $16, 0x1004
+	add $19, $0, $17
+
+forPVct:	
+	beq $17, $0, fPVct
 	
-#===========CÉU-1==============#
+	lw $4, 0($16)
+	addi $2, $0, 34
+	syscall
+	
+	addi $4, $0, ','
+	addi $2, $0, 11
+	syscall
+	
+	addi $4, $0, ' '
+	addi $2, $0, 11
+	syscall
+	
+	addi $16, $16, +4
+	addi $17, $17, -1
+	
+	j forPVct
+	
+fPVct: jr $31
+
+#============printVct===========#
+	
+#===========CÉU==============#
 
 prmF1:	addi $9, $0, 7168
-	ori $4, $0, 0x35A1FF
+	ori $4, $0, 0x8ECCEE
+	ori $10, 0x10012200
 
-for1:	beq $9, $0, fimF1
+for1:	beq $8, $10, fimF1
 
 	sw $4, 0($8)
 	sw $4, 32768($8)
@@ -91,9 +157,39 @@ for1:	beq $9, $0, fimF1
 	
 	j for1
 
-fimF1:	jr $31
+fimF1:	add $10, $0, $0
+	jr $31
 
-#===========CÉU-1==============#
+#===========CÉU==============#
+
+#===========DETALHE-CÉU-1==============#
+
+prmDetCeu1:
+
+	#ori $9, 0x10012200
+	ori $10, 0x10012600
+	ori $4, $0, 0x9FD5EF 
+	
+
+forDetCeu1:	
+
+	beq $8, $10, fimDetCeu1
+
+	sw $4, 0($8)
+	sw $4, 32768($8)
+	
+	add $8, $8, 4
+	
+	addi $9, $9, -1
+	
+	j forDetCeu1
+
+fimDetCeu1:	
+	
+	jr $31
+
+#===========DETALHE-CÉU-1==============#
+
 
 #=========ESTILINGUE===========#
 
